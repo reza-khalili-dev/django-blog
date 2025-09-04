@@ -56,7 +56,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        "DIRS": [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -67,6 +67,20 @@ TEMPLATES = [
         },
     },
 ]
+# ✔ مسیرهای ریدایرکت بعد از لاگین/لاگ‌اوت
+LOGIN_URL = "login"            # اگر کاربر لاگین نباشه و به صفحه محافظت‌شده بره، به این آدرس میاد
+LOGIN_REDIRECT_URL = "profile" # بعد از لاگین موفق به این صفحه میره
+LOGOUT_REDIRECT_URL = "login"  # بعد از لاگ‌اوت به صفحه لاگین برمی‌گرده
+
+# (اختیاری) مپ‌شدن پیام‌ها به کلاس‌های Bootstrap
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.DEBUG: "secondary",
+    messages.INFO: "info",
+    messages.SUCCESS: "success",
+    messages.WARNING: "warning",
+    messages.ERROR: "danger",
+}
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
