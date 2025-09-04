@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Blog | Django Blog{% endblock %}
+
+{% block content %}
+<h1 class="h4 mb-3">Latest Posts</h1>
+
+{% if posts %}
+  <div class="vstack gap-3">
+    {% for post in posts %}
+      <div class="card shadow-sm">
+        <div class="card-body">
+
+          <h2 class="h5 mb-1">
+            <a href="{{ post.get_absolute_url }}" class="text-decoration-none">
+              {{ post.title }}
+            </a>
+          </h2>
+
+          <div class="text-muted small mb-2">
+            By {{ post.author.username }} · {{ post.created_at|date:"Y-m-d H:i" }}
+          </div>
+
+          <p class="mb-0">{{ post.content|truncatewords:30 }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <nav class="mt-3">
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        </li>
+      {% endif %}
+      <li class="page-item disabled">
+        <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+      </li>
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+{% else %}
+  <div class="alert alert-info">No posts yet.</div>
+{% endif %}
+{% endblock %}

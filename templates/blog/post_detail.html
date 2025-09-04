@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} | Django Blog{% endblock %}
+
+{% block content %}
+<article class="card shadow-sm">
+  <div class="card-body">
+    <h1 class="h4 mb-1">{{ post.title }}</h1>
+
+    <div class="text-muted small mb-3">
+      By {{ post.author.username }} · {{ post.created_at|date:"Y-m-d H:i" }}
+      {% if post.status == "draft" %}<span class="badge text-bg-secondary ms-2">Draft</span>{% endif %}
+    </div>
+
+    <div class="mb-3">
+      {{ post.content|linebreaksbr }}
+    </div>
+
+    <a class="btn btn-outline-secondary" href="{% url 'home' %}">← Back to posts</a>
+
+    {% if user.is_authenticated and user == post.author %}
+      <div class="mt-2">
+        <a class="btn btn-sm btn-outline-primary disabled" href="#">Edit</a>
+        <a class="btn btn-sm btn-outline-danger disabled" href="#">Delete</a>
+      </div>
+    {% endif %}
+  </div>
+</article>
+{% endblock %}
