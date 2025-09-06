@@ -6,7 +6,9 @@ urlpatterns = [
     path('signup/',views.SignUpView.as_view(), name='signup'),
     path('profile/',views.ProfileView.as_view(), name='profile'),
     path('',views.PostListView.as_view(), name='home'), 
+    path('post/new/', views.PostCreateView.as_view(), name='post_new'),
     path('post/<slug:slug>/', views.PostDetailView.as_view(), name='post_detail'),
+
     
 
     

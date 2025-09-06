@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView, ListView, DeleteView
+from django.views.generic import CreateView, ListView, DetailView
 from django.urls import reverse_lazy
 from django.db.models import Q
 from .models import Post
@@ -32,11 +32,11 @@ class PostListView(ListView):
     def get_queryset(self):
         return (Post.objects.filter(status="published").select_related("author").order_by("-created_at"))
 
-class PostDetailView(DeleteView):
+class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
-    slug_field = 'post'
+    slug_field = 'slug'
     slug_url_kwarg = 'slug'
 
     def get_queryset(self):
@@ -44,4 +44,15 @@ class PostDetailView(DeleteView):
         if self.request.user.is_authenticated:
             return base_qs.filter(Q(status = 'published') | Q(author = self.request.user))
         return base_qs.filter(status = 'published')
-        
+
+
+class PostCreateView(LoginRequiredMixin,CreateView):
+    model = Post
+    fields = ['title', 'slug', 'content', 'status']
+    template_name = 'blog/post_form.html'
+    success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+

@@ -25,6 +25,12 @@
 
                     {% if user.is_authenticated %}
                         <li class="nav-item">
+                        <a class="nav-link" href="{% url 'post_new' %}">New Post</a>
+                        </li>
+                    {% endif %}
+                    
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
                             <a class="nav-link" href="#">Hi, {{ user.username }}</a>
                         </li>
                         <li class="nav-item">
