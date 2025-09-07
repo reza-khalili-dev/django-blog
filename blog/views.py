@@ -5,6 +5,7 @@ from django.views.generic import CreateView, ListView, DetailView, UpdateView, D
 from django.urls import reverse_lazy
 from django.db.models import Q
 from .models import Post
+from .forms import PostForm
 
 # Create your views here.
 
@@ -48,7 +49,7 @@ class PostDetailView(DetailView):
 
 class PostCreateView(LoginRequiredMixin,CreateView):
     model = Post
-    fields = ['title', 'slug', 'content', 'status']
+    form_class = PostForm
     template_name = 'blog/post_form.html'
     success_url = reverse_lazy('home')
 
@@ -59,7 +60,7 @@ class PostCreateView(LoginRequiredMixin,CreateView):
 
 class PostUpdateView(LoginRequiredMixin,UpdateView):
     model = Post
-    fields = ['title', 'slug', 'content', 'status']
+    form_class = PostForm
     template_name = 'blog/post_form.html'
     context_object_name = 'post'
 
