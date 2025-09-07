@@ -19,8 +19,8 @@
 
     {% if user.is_authenticated and user == post.author %}
       <div class="mt-2">
-        <a class="btn btn-sm btn-outline-primary disabled" href="#">Edit</a>
-        <a class="btn btn-sm btn-outline-danger disabled" href="#">Delete</a>
+        <a href="{% url 'post_edit' post.slug %}" class="btn btn-primary">Edit</a>
+        <a href="{% url 'post_delete' post.slug %}" class="btn btn-danger">Delete</a>
       </div>
     {% endif %}
   </div>

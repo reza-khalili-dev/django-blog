@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView, ListView, DetailView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.db.models import Q
 from .models import Post
@@ -56,3 +56,22 @@ class PostCreateView(LoginRequiredMixin,CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
+
+class PostUpdateView(LoginRequiredMixin,UpdateView):
+    model = Post
+    fields = ['title', 'slug', 'content', 'status']
+    template_name = 'blog/post_form.html'
+    context_object_name = 'post'
+
+    def get_queryset(self):
+        return Post.objects.filter(author = self.request.user)
+    
+
+class PostDeleteView(LoginRequiredMixin,DeleteView):
+    model = Post
+    template_name = 'blog/post_confirm_delete.html'
+    success_url = reverse_lazy('home')
+    
+    def get_queryset(self):
+        return Post.objects.filter(author = self.request.user)
+        
